@@ -186,13 +186,14 @@ function combo_tap(combo, action) {
             console.log('resetting f');
             reset();
             //cmd.add_shortcut(combo[0], reset)
-        }, 800);
+        }, 500);
     }
     function reset(e) {
         console.log('reset called');
         //that(combo, action); 
         cmd.add_shortcut(combo[0], f);
     }
+    console.log("combo tap for", combo);
     
     reset();
 };
@@ -201,6 +202,14 @@ combo_tap('gg', focus_first);
 
 // cut
 combo_tap('dd', def_cmd['x']);
+//{
+//        'd' : {
+//            help    : 'delete cell (press twice)',
+//            help_index : 'ej',
+//            count: 2,
+//cmd.add_shortcut('d', def_cmd['x'] );
+
+
 
 // copy
 combo_tap('yy', def_cmd['c']);
