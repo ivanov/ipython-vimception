@@ -46,19 +46,20 @@ getCSS(p + "dialog/dialog.css");
 $.getScript("static/components/codemirror/addon/dialog/dialog.js");
 
 //$.getScript("/static/components/codemirror/addon/
-$.getScript(p + "fold/indent-fold.js");
-$.getScript(p + "fold/foldcode.js");
-$.getScript(p + "fold/foldgutter.js");
+//$.getScript(p + "fold/indent-fold.js");
+//$.getScript(p + "fold/foldcode.js");
+//$.getScript(p + "fold/foldgutter.js");
 
-IPython.CodeCell.options_default.cm_config.foldGutter = true;
-IPython.CodeCell.options_default.cm_config.gutters =  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"];
-getCSS(p + "fold/foldgutter.css");
+//IPython.CodeCell.options_default.cm_config.foldGutter = true;
+//IPython.CodeCell.options_default.cm_config.gutters =  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"];
+//getCSS(p + "fold/foldgutter.css");
 
 var p = "/static/components/codemirror/";
 //themes
-getCSS(p + "theme/tomorrow-night-eighties.css");
-getCSS(p + "theme/twilight.css");
-getCSS(p + "theme/vibrant-ink.css");
+//getCSS(p + "theme/tomorrow-night-eighties.css");
+//getCSS(p + "theme/twilight.css");
+//getCSS(p + "theme/vibrant-ink.css");
+getCSS(p + "theme/xq-light.css");
 
 // on all code mirror instances on this page, apply the function f
 function all_cm(f) {
@@ -70,7 +71,6 @@ function all_cm(f) {
 to('vim');
 function vim_up(event) {
     var cell = IPython.notebook.get_selected_cell();
-    console.log('IPython "k" handler invoked')
     if (cell && cell.at_top() && cell.code_mirror.options.keyMap === 'vim') {
         console.log('inside the business logic k');
         event.preventDefault();
@@ -93,7 +93,7 @@ function vim_down(event) {
         }
 
 var m = '(vim) '
-var shortcuts = {
+var edit_shortcuts = {
     'k' : {
         help    : m + 'up a line, even across cells',
         help_index : 'AA',
@@ -104,8 +104,21 @@ var shortcuts = {
         help_index : 'AA',
         handler : vim_down
     },
+
 };
-edit.add_shortcuts(shortcuts);
+
+var command_shortcuts = {
+    'c' :  {
+        help    : m + def_cmd['y'].help,
+        help_index : 'AA',
+        handler : def_cmd['y'].handler
+    }
+
+
+};
+
+edit.add_shortcuts(edit_shortcuts);
+cmd.add_shortcuts(command_shortcuts);
 //edit.add_shortcuts('k', def_edit['up'].handler);
 //edit.add_shortcut('j', def_edit['down'].handler);
 
@@ -149,6 +162,14 @@ all_cm( function (cm) {
         CodeMirror.keyMap['vim-insert']['Esc'](cm);
         CodeMirror.keyMap['vim']['Esc'](cm);
         cm.setOption('styleActiveLine', false);
+        if (cm.getOption("fullScreen")) {
+            cm.setOption('fullScreen', false); 
+            // fullScreen the newly selected code mirror (doesn't work)
+            //setTimeout(100, function() {
+            //    console.log(IPython.notebook.get_selected_cell().code_mirror);
+            //    IPython.notebook.get_selected_cell().code_mirror.setOption('fullScreen', true); 
+            //});
+        }
     });
     cm.on('focus', function(cm) {
         cm.setOption('styleActiveLine', true);
@@ -170,26 +191,33 @@ function focus_last(e) {
 };
 
 function focus_first(e) {
-    console.log('focus first called');
     var cells = IPython.notebook.get_cells();
     cells[0].focus_cell();
 };
 
 function combo_tap(combo, action) {
     var that = this;
+    var timeout;
     function f() {
         console.log('f called once');
         
         // redo this so that when an action is performed, we restore the original combo
-        cmd.add_shortcut(combo[1], action);
-        setTimeout(function () {
+        cmd.add_shortcut(combo[1], 
+                function() { console.log("doing action", combo); reset(); action(); timeout.clear();} );
+        timeout = setTimeout(function () {
             console.log('resetting f');
             reset();
             //cmd.add_shortcut(combo[0], reset)
-        }, 500);
+        }, 800);
     }
     function reset(e) {
+        //cmd.remove_shortcut(combo[0]);
         console.log('reset called');
+        //if (timeout) {
+        //    console.log('resetting aborted');
+        //    clearTimeout(timeout);
+        //    timeout = null;
+        //}
         //that(combo, action); 
         cmd.add_shortcut(combo[0], f);
     }
@@ -200,19 +228,15 @@ function combo_tap(combo, action) {
 cmd.add_shortcut('shift+g', focus_last);
 combo_tap('gg', focus_first);
 
+// XXX: the way combo tap is currently implemented, this won't work
+// need a more generic mechanism for combo-taps with common prefixes
+// combo_tap('gq', f();
+//cmd.remove_shortcut('d');
 // cut
-combo_tap('dd', def_cmd['x']);
-//{
-//        'd' : {
-//            help    : 'delete cell (press twice)',
-//            help_index : 'ej',
-//            count: 2,
-//cmd.add_shortcut('d', def_cmd['x'] );
-
-
+combo_tap('dd', def_cmd['x'].handler);
 
 // copy
-combo_tap('yy', def_cmd['c']);
+combo_tap('yy', def_cmd['c'].handler);
 
 // paste
 cmd.add_shortcut('p', def_cmd['v']);
@@ -242,27 +266,6 @@ function focus_first(e) {
     cells[0].focus_cell();
 };
 
-function combo_tap(combo, action) {
-    var that = this;
-    function f() {
-        console.log('f called once');
-        setTimeout(function () {
-            console.log('resetting f');
-            // this wasn't a double tap, so maybe do the default action for the single key, if there was one
-            def_cmd[combo[0]].handler();
-            reset();
-            //cmd.add_shortcut(combo[0], reset)
-        }, 800);
-        cmd.add_shortcut(combo[1], action);
-    }
-    function reset(e) {
-        console.log('reset called');
-        //that(combo, action); 
-        cmd.add_shortcut(combo[0], f);
-    }
-    
-    reset();
-};
 
 cmd.add_shortcut('shift+g', focus_last);
 combo_tap('gg', focus_first);
@@ -296,13 +299,18 @@ IPython.quick_help = new IPython.QuickHelp();
 all_cm( function (cm) {
     cm.setOption('foldGutter', true);
     cm.setOption('gutters',  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-    cm.options.extraKeys["Ctrl-F"] = function(cm){ cm.foldCode(cm.getCursor()); },
-    cm.options.extraKeys["Ctrl-F"] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
+    cm.options.extraKeys["Ctrl-F"] = function(cm){ cm.foldCode(cm.getCursor()); };
+    var wrapOptions = {column: 78, killTrailingSpace: true, wrapOn: /\s\S|[^\.\d]/ };
+    // XXX: add a hardwrap-range to this as well
+    cm.options.extraKeys["F2"] =  function(cm) { cm.wrapParagraph(cm.getCursor(), wrapOptions); };
+    //cm.options.extraKeys["["] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
     IPython.CodeCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
     IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
 
     // todo - do this for new cells as well
-    cm.setOption('theme', "tomorrow-night-eighties");
+    //cm.setOption('theme', "tomorrow-night-eighties");
+    //cm.setOption('theme', "twilight");
+    cm.setOption('theme', "xq-light");
     // support this a :only? turn off full screen on blur
     cm.options.extraKeys["F11"] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
     cm.options.extraKeys["Esc"] =  function(cm) {
@@ -312,21 +320,39 @@ all_cm( function (cm) {
           if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
         };
     //all_cm( function (cm) {
-    cm.on('blur',function(cm) { 
-        if (cm.getOption("fullScreen")) {
-            cm.setOption('fullScreen', false); 
-            // fullScreen the newly selected code mirror (doesn't work)
-            //setTimeout(100, function() {
-            //    console.log(IPython.notebook.get_selected_cell().code_mirror);
-            //    IPython.notebook.get_selected_cell().code_mirror.setOption('fullScreen', true); 
-            //});
-        }
-    });
 });
 
-setTimeout(200, function() {IPython.notebook.get_selected_cell().set_input_prompt('vim');})
+//setTimeout(function() {IPython.notebook.get_selected_cell().set_input_prompt('vim');}, 200)
 
-$("#ipython_notebook").append('<img src="http://www.vim.org/images/vim_on_fire.gif" style="'
-    + 'position: absolute; left: 51px; top: -10px; height: initial;">');
+$("#ipython_notebook").find('img').remove('#vim');
+$("#ipython_notebook").append('<img id="vim" src="/static/custom/vim_on_fire.gif" style="'
+    + 'position: absolute; left: 51px; top: -10px; height: initial;">')
 
+//$('#vim').animate({
+//          opacity: toggle,
+//          //left: "+=50",
+//          width: [ "toggle", "swing" ],
+//          height: [ "toggle", "swing" ],
+//}, 1000, 'linear', function() {
+//// Animation complete.
+//}
+//);
 
+//setTimeout(function() {
+//    img.find('img').remove('#vim');
+//    $("#ipython_notebook").append('<img id="vim" src="http://www.vim.org/images/vim_small.gif" style="'
+//    + 'position: absolute; left: 51px; top: 10px; height: initial;">');
+//}, 5000)
+
+// XXX: Autowrapping is kind of broken - you can write a line that will have
+// its last word (if it's 1 or 2 characters just go back and forth between the
+// current and the next lines)
+//all_cm(function (cm) {
+//    var wait, options = {column: 78, killTrailingSpace: true, wrapOn: /\s\S|[^\.\d]/};
+//    cm.on("change", function(cm, change) {
+//      clearTimeout(wait);
+//      wait = setTimeout(function() {
+//        console.log(cm.wrapParagraphsInRange(change.from, CodeMirror.changeEnd(change), options));
+//      }, 300);
+//    });
+//});
