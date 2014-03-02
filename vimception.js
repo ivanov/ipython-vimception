@@ -79,264 +79,264 @@ function all_cm(f) {
 
 
 to('vim');
-// function vim_up(event) {
-//     var cell = IPython.notebook.get_selected_cell();
-//     if (cell && cell.at_top() && cell.code_mirror.options.keyMap === 'vim') {
-//         console.log('inside the business logic k');
-//         event.preventDefault();
-//         IPython.notebook.command_mode()
-//         IPython.notebook.select_prev();
-//         IPython.notebook.edit_mode();
-//         return false;
-//     };
-// }
+function vim_up(event) {
+    var cell = IPython.notebook.get_selected_cell();
+    if (cell && cell.at_top() && cell.code_mirror.options.keyMap === 'vim') {
+        console.log('inside the business logic k');
+        event.preventDefault();
+        IPython.notebook.command_mode()
+        IPython.notebook.select_prev();
+        IPython.notebook.edit_mode();
+        return false;
+    };
+}
 
-// function vim_down(event) {
-//             var cell = IPython.notebook.get_selected_cell();
-//             if (cell && cell.at_bottom() && cell.code_mirror.options.keyMap === 'vim') {
-//                 event.preventDefault();
-//                 IPython.notebook.command_mode()
-//                 IPython.notebook.select_next();
-//                 IPython.notebook.edit_mode();
-//                 return false;
-//             };
-//         }
+function vim_down(event) {
+            var cell = IPython.notebook.get_selected_cell();
+            if (cell && cell.at_bottom() && cell.code_mirror.options.keyMap === 'vim') {
+                event.preventDefault();
+                IPython.notebook.command_mode()
+                IPython.notebook.select_next();
+                IPython.notebook.edit_mode();
+                return false;
+            };
+        }
 
-// var m = '(vim) '
-// var edit_shortcuts = {
-//     'k' : {
-//         help    : m + 'up a line, even across cells',
-//         help_index : 'AA',
-//         handler : vim_up
-//     },
-//     'j' : {
-//         help    : m + 'down a line, even across cells',
-//         help_index : 'AA',
-//         handler : vim_down
-//     },
+var m = '(vim) '
+var edit_shortcuts = {
+    'k' : {
+        help    : m + 'up a line, even across cells',
+        help_index : 'AA',
+        handler : vim_up
+    },
+    'j' : {
+        help    : m + 'down a line, even across cells',
+        help_index : 'AA',
+        handler : vim_down
+    },
 
-// };
+};
 
-// var command_shortcuts = {
-//     'c' :  {
-//         help    : m + def_cmd['y'].help,
-//         help_index : 'AA',
-//         handler : def_cmd['y'].handler
-//     }
+var command_shortcuts = {
+    'c' :  {
+        help    : m + def_cmd['y'].help,
+        help_index : 'AA',
+        handler : def_cmd['y'].handler
+    }
 
 
-// };
+};
 
-// edit.add_shortcuts(edit_shortcuts);
-// cmd.add_shortcuts(command_shortcuts);
-// //edit.add_shortcuts('k', def_edit['up'].handler);
-// //edit.add_shortcut('j', def_edit['down'].handler);
+edit.add_shortcuts(edit_shortcuts);
+cmd.add_shortcuts(command_shortcuts);
+//edit.add_shortcuts('k', def_edit['up'].handler);
+//edit.add_shortcut('j', def_edit['down'].handler);
 
-// // N.B. This code looks fairly simple, but it took me forever to 
-// // figure out how to do this, 
-// // 
-// // there's a problem here, Ctrl-[ is already handled by CodeMirror by the time we 
-// // (IPython.keyboard_manager) get it CodeMirror issues signals on mode change, 
-// // so we have to hook into that to get Ctrl-[
-// edit.remove_shortcut('Ctrl+[');
+// N.B. This code looks fairly simple, but it took me forever to 
+// figure out how to do this, 
+// 
+// there's a problem here, Ctrl-[ is already handled by CodeMirror by the time we 
+// (IPython.keyboard_manager) get it CodeMirror issues signals on mode change, 
+// so we have to hook into that to get Ctrl-[
+edit.remove_shortcut('Ctrl+[');
 
-// CodeMirror.commands.leaveInsertOrEdit = function (cm) {
-//     if ( cm.state.vim.insertMode ) {
-//         // do magic here to get out of insert mode
-//         CodeMirror.keyMap['vim-insert']['Esc'](cm);
-//     } else {
-//         IPython.notebook.command_mode();
-//         IPython.notebook.focus_cell();
-//     }
-// };
+CodeMirror.commands.leaveInsertOrEdit = function (cm) {
+    if ( cm.state.vim.insertMode ) {
+        // do magic here to get out of insert mode
+        CodeMirror.keyMap['vim-insert']['Esc'](cm);
+    } else {
+        IPython.notebook.command_mode();
+        IPython.notebook.focus_cell();
+    }
+};
         
-// //C().options.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
-// all_cm( function (cm) {
-//     cm.options.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
-//     if ( CodeMirror.defaults.extraKeys === null ) { 
-//         CodeMirror.defaults.extraKeys = {};
-//     }
-//     // TODO: make this change permanent
-//     // this part seems to be ignore when adding a new cell
-//     // - alternative solution would be to listen for NewCell events and rerun the CM function on it
-//     // - it could also be the case that when we instatiate CodeMirror, we somehow leave out CM.defaults.extraKeys
-//     IPython.CodeCell.options_default.cm_config.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
-//     IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
-// })
+//C().options.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
+all_cm( function (cm) {
+    cm.options.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
+    if ( CodeMirror.defaults.extraKeys === null ) { 
+        CodeMirror.defaults.extraKeys = {};
+    }
+    // TODO: make this change permanent
+    // this part seems to be ignore when adding a new cell
+    // - alternative solution would be to listen for NewCell events and rerun the CM function on it
+    // - it could also be the case that when we instatiate CodeMirror, we somehow leave out CM.defaults.extraKeys
+    IPython.CodeCell.options_default.cm_config.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
+    IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
+})
 
-// // On blur, make sure we go back to command mode for CodeMirror (in case user clicked away)
-// // TODO: Make this permanent - how to get CodeMirror to do this for new cells created after
-// all_cm( function (cm) {
-//     cm.on('blur', function(cm) {
-//         // TODO: I wish I understood a better way to do this, but fake pressing Escape work
-//         CodeMirror.keyMap['vim-insert']['Esc'](cm);
-//         CodeMirror.keyMap['vim']['Esc'](cm);
-//         cm.setOption('styleActiveLine', false);
-//         if (cm.getOption("fullScreen")) {
-//             cm.setOption('fullScreen', false); 
-//             // fullScreen the newly selected code mirror (doesn't work)
-//             //setTimeout(100, function() {
-//             //    console.log(IPython.notebook.get_selected_cell().code_mirror);
-//             //    IPython.notebook.get_selected_cell().code_mirror.setOption('fullScreen', true); 
-//             //});
-//         }
-//     });
-//     cm.on('focus', function(cm) {
-//         cm.setOption('styleActiveLine', true);
-//     });
-// });
+// On blur, make sure we go back to command mode for CodeMirror (in case user clicked away)
+// TODO: Make this permanent - how to get CodeMirror to do this for new cells created after
+all_cm( function (cm) {
+    cm.on('blur', function(cm) {
+        // TODO: I wish I understood a better way to do this, but fake pressing Escape work
+        CodeMirror.keyMap['vim-insert']['Esc'](cm);
+        CodeMirror.keyMap['vim']['Esc'](cm);
+        cm.setOption('styleActiveLine', false);
+        if (cm.getOption("fullScreen")) {
+            cm.setOption('fullScreen', false); 
+            // fullScreen the newly selected code mirror (doesn't work)
+            //setTimeout(100, function() {
+            //    console.log(IPython.notebook.get_selected_cell().code_mirror);
+            //    IPython.notebook.get_selected_cell().code_mirror.setOption('fullScreen', true); 
+            //});
+        }
+    });
+    cm.on('focus', function(cm) {
+        cm.setOption('styleActiveLine', true);
+    });
+});
 
-// // 'i' by default interrupts the kernel (what Ctrl-C does at the terminal)
-// cmd.remove_shortcut('i');
-// cmd.add_shortcut('i', def_cmd.enter);
+// 'i' by default interrupts the kernel (what Ctrl-C does at the terminal)
+cmd.remove_shortcut('i');
+cmd.add_shortcut('i', def_cmd.enter);
 
-// // not quite what we want - 'i' requires a double-tap
-// // add documentation for this.
-// cmd.add_shortcut('ctrl+c', function(e) { IPython.notebook.kernel.interrupt(); return false});
+// not quite what we want - 'i' requires a double-tap
+// add documentation for this.
+cmd.add_shortcut('ctrl+c', function(e) { IPython.notebook.kernel.interrupt(); return false});
 
 
-// function focus_last(e) {
-//     var cells = IPython.notebook.get_cells();
-//     cells[cells.length-1].focus_cell();
-// };
+function focus_last(e) {
+    var cells = IPython.notebook.get_cells();
+    cells[cells.length-1].focus_cell();
+};
 
-// function focus_first(e) {
-//     var cells = IPython.notebook.get_cells();
-//     cells[0].focus_cell();
-// };
+function focus_first(e) {
+    var cells = IPython.notebook.get_cells();
+    cells[0].focus_cell();
+};
 
-// function combo_tap(combo, action) {
-//     var that = this;
-//     var timeout;
-//     function f() {
-//         console.log('f called once');
+function combo_tap(combo, action) {
+    var that = this;
+    var timeout;
+    function f() {
+        console.log('f called once');
         
-//         // redo this so that when an action is performed, we restore the original combo
-//         cmd.add_shortcut(combo[1], 
-//                 function() { console.log("doing action", combo); reset(); action(); timeout.clear();} );
-//         timeout = setTimeout(function () {
-//             console.log('resetting f');
-//             reset();
-//             //cmd.add_shortcut(combo[0], reset)
-//         }, 800);
-//     }
-//     function reset(e) {
-//         //cmd.remove_shortcut(combo[0]);
-//         console.log('reset called');
-//         //if (timeout) {
-//         //    console.log('resetting aborted');
-//         //    clearTimeout(timeout);
-//         //    timeout = null;
-//         //}
-//         //that(combo, action); 
-//         cmd.add_shortcut(combo[0], f);
-//     }
-//     console.log("combo tap for", combo);
+        // redo this so that when an action is performed, we restore the original combo
+        cmd.add_shortcut(combo[1], 
+                function() { console.log("doing action", combo); reset(); action(); timeout.clear();} );
+        timeout = setTimeout(function () {
+            console.log('resetting f');
+            reset();
+            //cmd.add_shortcut(combo[0], reset)
+        }, 800);
+    }
+    function reset(e) {
+        //cmd.remove_shortcut(combo[0]);
+        console.log('reset called');
+        //if (timeout) {
+        //    console.log('resetting aborted');
+        //    clearTimeout(timeout);
+        //    timeout = null;
+        //}
+        //that(combo, action); 
+        cmd.add_shortcut(combo[0], f);
+    }
+    console.log("combo tap for", combo);
     
-//     reset();
-// };
-// cmd.add_shortcut('shift+g', focus_last);
-// combo_tap('gg', focus_first);
+    reset();
+};
+cmd.add_shortcut('shift+g', focus_last);
+combo_tap('gg', focus_first);
 
-// // XXX: the way combo tap is currently implemented, this won't work
-// // need a more generic mechanism for combo-taps with common prefixes
-// // combo_tap('gq', f();
-// //cmd.remove_shortcut('d');
-// // cut
-// combo_tap('dd', def_cmd['x'].handler);
+// XXX: the way combo tap is currently implemented, this won't work
+// need a more generic mechanism for combo-taps with common prefixes
+// combo_tap('gq', f();
+//cmd.remove_shortcut('d');
+// cut
+combo_tap('dd', def_cmd['x'].handler);
 
-// // copy
-// combo_tap('yy', def_cmd['c'].handler);
+// copy
+combo_tap('yy', def_cmd['c'].handler);
 
-// // paste
-// cmd.add_shortcut('p', def_cmd['v']);
+// paste
+cmd.add_shortcut('p', def_cmd['v']);
 
-// // undo
-// cmd.add_shortcut('u', def_cmd['z']);
+// undo
+cmd.add_shortcut('u', def_cmd['z']);
 
-// // Join (merge down with cell below)
-// cmd.add_shortcut('shift+j', def_cmd['shift+m'])
+// Join (merge down with cell below)
+cmd.add_shortcut('shift+j', def_cmd['shift+m'])
 
-// //edit.add_shortcut('k', def_edit['up'].handler);
-// //[edit.add_shortcut('j', def_edit['down'].handler);
-// edit.remove_shortcut('ctrl+[');
+//edit.add_shortcut('k', def_edit['up'].handler);
+//[edit.add_shortcut('j', def_edit['down'].handler);
+edit.remove_shortcut('ctrl+[');
 
-// CodeMirror.prototype.save = function() { 
-//     IPython.notebook.save_checkpoint()
-// }
+CodeMirror.prototype.save = function() { 
+    IPython.notebook.save_checkpoint()
+}
 
-// function focus_last(e) {
-//     var cells = IPython.notebook.get_cells();
-//     cells[cells.length-1].focus_cell();
-// };
+function focus_last(e) {
+    var cells = IPython.notebook.get_cells();
+    cells[cells.length-1].focus_cell();
+};
 
-// function focus_first(e) {
-//     console.log('focus first called');
-//     var cells = IPython.notebook.get_cells();
-//     cells[0].focus_cell();
-// };
+function focus_first(e) {
+    console.log('focus first called');
+    var cells = IPython.notebook.get_cells();
+    cells[0].focus_cell();
+};
 
 
-// cmd.add_shortcut('shift+g', focus_last);
-// combo_tap('gg', focus_first);
+cmd.add_shortcut('shift+g', focus_last);
+combo_tap('gg', focus_first);
 
-// // get rid of the default Ctrl-W binding
-// // this only works for Firefox
-// $(document).ready(function() {
-// 	$(this).bind('keypress', function(e) {
-// 		var key = (e.keyCode ? e.keyCode : e.charCode);
-// 		if (key == '119' && e.ctrlKey) {
-// 			return false;
-// 		}
-// 	});
-// });
+// get rid of the default Ctrl-W binding
+// this only works for Firefox
+$(document).ready(function() {
+	$(this).bind('keypress', function(e) {
+		var key = (e.keyCode ? e.keyCode : e.charCode);
+		if (key == '119' && e.ctrlKey) {
+			return false;
+		}
+	});
+});
 
-// window.addEventListener("beforeunload", function( event ) {
-//     var press = jQuery.Event("keypress");
-//     press.ctrlKey = false;
-//     press.which = 27; // escape
-//     $(document).trigger(press);
-//     event.returnValue = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-//     event.returnValue +="\nX  Chrome sucks at captruring Ctrl-W, sorry  X";
-//     event.returnValue += "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-// });
+window.addEventListener("beforeunload", function( event ) {
+    var press = jQuery.Event("keypress");
+    press.ctrlKey = false;
+    press.which = 27; // escape
+    $(document).trigger(press);
+    event.returnValue = "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    event.returnValue +="\nX  Chrome sucks at captruring Ctrl-W, sorry  X";
+    event.returnValue += "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+});
 
-// // update the keyboard shortcuts
-// IPython.quick_help = new IPython.QuickHelp();
+// update the keyboard shortcuts
+IPython.quick_help = new IPython.QuickHelp();
 
-// //IPython.CodeCell.options_default.cm_config.styleActiveLine = true;
+//IPython.CodeCell.options_default.cm_config.styleActiveLine = true;
 
-// all_cm( function (cm) {
-//     cm.setOption('foldGutter', true);
-//     cm.setOption('gutters',  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-//     cm.options.extraKeys["Ctrl-F"] = function(cm){ cm.foldCode(cm.getCursor()); };
-//     var wrapOptions = {column: 78, killTrailingSpace: true, wrapOn: /\s\S|[^\.\d]/ };
-//     // XXX: add a hardwrap-range to this as well
-//     cm.options.extraKeys["F2"] =  function(cm) { cm.wrapParagraph(cm.getCursor(), wrapOptions); };
-//     //cm.options.extraKeys["["] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
-//     IPython.CodeCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
-//     IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
+all_cm( function (cm) {
+    cm.setOption('foldGutter', true);
+    cm.setOption('gutters',  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+    cm.options.extraKeys["Ctrl-F"] = function(cm){ cm.foldCode(cm.getCursor()); };
+    var wrapOptions = {column: 78, killTrailingSpace: true, wrapOn: /\s\S|[^\.\d]/ };
+    // XXX: add a hardwrap-range to this as well
+    cm.options.extraKeys["F2"] =  function(cm) { cm.wrapParagraph(cm.getCursor(), wrapOptions); };
+    //cm.options.extraKeys["["] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
+    IPython.CodeCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
+    IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
 
-//     // todo - do this for new cells as well
-//     //cm.setOption('theme', "tomorrow-night-eighties");
-//     //cm.setOption('theme', "twilight");
-//     cm.setOption('theme', "xq-light");
-//     // support this a :only? turn off full screen on blur
-//     cm.options.extraKeys["F11"] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
-//     cm.options.extraKeys["Esc"] =  function(cm) {
-//           if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-//         };
-//     cm.options.extraKeys["Ctrl-A"] =  function(cm) {
-//           if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-//         };
-//     //all_cm( function (cm) {
-// });
+    // todo - do this for new cells as well
+    //cm.setOption('theme', "tomorrow-night-eighties");
+    //cm.setOption('theme', "twilight");
+    cm.setOption('theme', "xq-light");
+    // support this a :only? turn off full screen on blur
+    cm.options.extraKeys["F11"] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
+    cm.options.extraKeys["Esc"] =  function(cm) {
+          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        };
+    cm.options.extraKeys["Ctrl-A"] =  function(cm) {
+          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        };
+    //all_cm( function (cm) {
+});
 
-// //setTimeout(function() {IPython.notebook.get_selected_cell().set_input_prompt('vim');}, 200)
+//setTimeout(function() {IPython.notebook.get_selected_cell().set_input_prompt('vim');}, 200)
 
-// $("#ipython_notebook").find('img').remove('#vim');
-// $("#ipython_notebook").append('<img id="vim" src="/static/custom/vim_on_fire.gif" style="'
-//     + 'position: absolute; left: 51px; top: -10px; height: initial;">')
+$("#ipython_notebook").find('img').remove('#vim');
+$("#ipython_notebook").append('<img id="vim" src="/static/custom/vim_on_fire.gif" style="'
+    + 'position: absolute; left: 51px; top: -10px; height: initial;">')
 
 
 // -------- old -------------
