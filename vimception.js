@@ -29,59 +29,56 @@ function getCSS(path) {
 // just using this answer from SO 
 // http://stackoverflow.com/questions/11803215/how-to-include-multiple-js-files-using-jquery-getscript-method
 
-var p = "/static/components/codemirror/";
+var p = "/static/components/codemirror/addon/";
+
 $.when(
-    $.getScript(p + "keymap/vim.js"),
+// Grab the CodeMirror vim keymap
+$.getScript(p + "../keymap/vim.js"),
+// also make search work via /
+$.getScript(p + "search/search.js"),
+$.getScript(p + "search/searchcursor.js"),
+
+// TODO: hook-up gq to perform a harwrap
+$.getScript(p + "wrap/hardwrap.js"),
+$.getScript(p + "selection/active-line.js"),
+//$.getScript("/static/components/codemirror/addon/
+// WARNING
+
+$.getScript(p + "display/fullscreen.js"),
+getCSS(p + "display/fullscreen.css"),
+getCSS(p + "dialog/dialog.css"),
+$.getScript(p + "dialog/dialog.js"),
+
+//$.getScript("/static/components/codemirror/addon/
+//$.getScript(p + "fold/indent-fold.js");
+//$.getScript(p + "fold/foldcode.js");
+//$.getScript(p + "fold/foldgutter.js");
+
+//getCSS(p + "fold/foldgutter.css");
+//themes
+//getCSS(p + "theme/tomorrow-night-eighties.css");
+//getCSS(p + "theme/twilight.css");
+//getCSS(p + "theme/vibrant-ink.css");
+getCSS(p + "theme/xq-light.css"),
+
     $.Deferred(function( deferred ){
         $( deferred.resolve );
     })
 ).then(function success(){
+
 console.log('Great success');
 
+IPython.CodeCell.options_default.cm_config.foldGutter = true;
+IPython.CodeCell.options_default.cm_config.gutters =  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"];
+
+// on all code mirror instances on this page, apply the function f
+function all_cm(f) {
+    // apply f to every code mirror instance. f takes one parameter
+    IPython.notebook.get_cells().map(function (c) { f(c.code_mirror); } );
+}
 
 
-// // Grab the CodeMirror vim keymap
-// $.getScript("/static/components/codemirror/keymap/vim.js");
-
-// // also make search work
-// $.getScript(p + "search/search.js");
-// $.getScript(p + "search/searchcursor.js");
-// // TODO: hook-up gq to perform a harwrap
-// $.getScript(p + "wrap/hardwrap.js");
-// $.getScript(p + "selection/active-line.js");
-// //$.getScript("/static/components/codemirror/addon/
-// // WARNING
-
-// $.getScript(p + "display/fullscreen.js");
-// getCSS(p + "display/fullscreen.css");
-
-// getCSS(p + "dialog/dialog.css");
-// $.getScript("static/components/codemirror/addon/dialog/dialog.js");
-
-// //$.getScript("/static/components/codemirror/addon/
-// //$.getScript(p + "fold/indent-fold.js");
-// //$.getScript(p + "fold/foldcode.js");
-// //$.getScript(p + "fold/foldgutter.js");
-
-// //IPython.CodeCell.options_default.cm_config.foldGutter = true;
-// //IPython.CodeCell.options_default.cm_config.gutters =  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"];
-// //getCSS(p + "fold/foldgutter.css");
-
-// var p = "/static/components/codemirror/";
-// //themes
-// //getCSS(p + "theme/tomorrow-night-eighties.css");
-// //getCSS(p + "theme/twilight.css");
-// //getCSS(p + "theme/vibrant-ink.css");
-// getCSS(p + "theme/xq-light.css");
-
-// // on all code mirror instances on this page, apply the function f
-// function all_cm(f) {
-//     // apply f to every code mirror instance. f takes one parameter
-//     IPython.notebook.get_cells().map(function (c) { f(c.code_mirror); } );
-// }
-
-
-// to('vim');
+to('vim');
 // function vim_up(event) {
 //     var cell = IPython.notebook.get_selected_cell();
 //     if (cell && cell.at_top() && cell.code_mirror.options.keyMap === 'vim') {
