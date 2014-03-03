@@ -21,3 +21,6 @@ TODO
  [ ] make the multi-level esacping optional (i.e. allow only ctrl-m to take you to command mode)
  
  [ ] look up what else I had in my todo a few weeks ago
+
+ [ ] add logic to %vimception to write vimception.json to profile_dir/static/custom
+	- investigate json config in general (Matthias implemented this at some point)
