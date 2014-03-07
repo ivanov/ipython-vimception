@@ -335,7 +335,10 @@ all_cm( function (cm) {
 //setTimeout(function() {IPython.notebook.get_selected_cell().set_input_prompt('vim');}, 200)
 
 $("#ipython_notebook").find('img').remove('#vim');
-$("#ipython_notebook").append('<img id="vim" src="/static/custom/vim_on_fire.gif" style="'
+$("#ipython_notebook").append('<img id="vim" src="http://www.vim.org/images/vim_on_fire.gif"'
+        // XXX: add it to the distribution
+        // /static/custom/vim_on_fire.gif" 
+    + ' style="'
     + 'position: absolute; left: 51px; top: -10px; height: initial;">')
 
 
