@@ -59,7 +59,7 @@ $.getScript(p + "dialog/dialog.js"),
 //getCSS(p + "theme/tomorrow-night-eighties.css");
 //getCSS(p + "theme/twilight.css");
 //getCSS(p + "theme/vibrant-ink.css");
-getCSS(p + "theme/xq-light.css"),
+//getCSS(p + "theme/xq-light.css"),
 
     $.Deferred(function( deferred ){
         $( deferred.resolve );
