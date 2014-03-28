@@ -138,7 +138,7 @@ cmd.add_shortcuts(command_shortcuts);
 // there's a problem here, Ctrl-[ is already handled by CodeMirror by the time we 
 // (IPython.keyboard_manager) get it CodeMirror issues signals on mode change, 
 // so we have to hook into that to get Ctrl-[
-edit.remove_shortcut('Ctrl+[');
+edit.remove_shortcut('Ctrl-[');
 
 CodeMirror.commands.leaveInsertOrEdit = function (cm) {
     if ( cm.state.vim.insertMode ) {
@@ -192,7 +192,7 @@ cmd.add_shortcut('i', def_cmd.enter);
 
 // not quite what we want - 'i' requires a double-tap
 // add documentation for this.
-cmd.add_shortcut('ctrl+c', function(e) { IPython.notebook.kernel.interrupt(); return false});
+cmd.add_shortcut('ctrl-c', function(e) { IPython.notebook.kernel.interrupt(); return false});
 
 
 function focus_last(e) {
@@ -235,7 +235,7 @@ function combo_tap(combo, action) {
     
     reset();
 };
-cmd.add_shortcut('shift+g', focus_last);
+cmd.add_shortcut('shift-g', focus_last);
 combo_tap('gg', focus_first);
 
 // XXX: the way combo tap is currently implemented, this won't work
@@ -255,11 +255,11 @@ cmd.add_shortcut('p', def_cmd['v']);
 cmd.add_shortcut('u', def_cmd['z']);
 
 // Join (merge down with cell below)
-cmd.add_shortcut('shift+j', def_cmd['shift+m'])
+cmd.add_shortcut('shift-j', def_cmd['shift-m'])
 
 //edit.add_shortcut('k', def_edit['up'].handler);
 //[edit.add_shortcut('j', def_edit['down'].handler);
-edit.remove_shortcut('ctrl+[');
+edit.remove_shortcut('ctrl-[');
 
 CodeMirror.prototype.save = function() { 
     IPython.notebook.save_checkpoint()
@@ -277,7 +277,7 @@ function focus_first(e) {
 };
 
 
-cmd.add_shortcut('shift+g', focus_last);
+cmd.add_shortcut('shift-g', focus_last);
 combo_tap('gg', focus_first);
 
 // get rid of the default Ctrl-W binding
@@ -376,3 +376,33 @@ $("#ipython_notebook").append('<img id="vim" src="http://www.vim.org/images/vim_
     alert('le sucks, something went wrong');
 
 });
+
+
+// at_top  and at_bottom methods for ipython-vimception
+    /**
+     * @method at_top
+     * @return {Boolean}
+     */
+    Cell.prototype.at_top = function () {
+        var cm = this.code_mirror;
+        var cursor = cm.getCursor();
+        if (cursor.line === 0 && cm.findPosV(cursor, -1, 'line').hitSide) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    /**
+     * @method at_bottom
+     * @return {Boolean}
+     * */
+    Cell.prototype.at_bottom = function () {
+        var cm = this.code_mirror;
+        var cursor = cm.getCursor();
+        if (cursor.line === (cm.lineCount()-1) && cm.findPosV(cursor, 1, 'line').hitSide) {
+            return true;
+        } else {
+            return false;
+        }
+    };
