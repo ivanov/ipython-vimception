@@ -54,11 +54,17 @@ It's all very rough right now, I'm working on it, so hang tight.
 TODO
 ----
 
- [ ] supress switching into command mode when moving cursor past the top/bottom lines (using new methods Jonathan added)
+ [ ] supress switching into command mode when moving cursor past the top/bottom
+     lines (using new methods Jonathan added)
 
- [ ] make the multi-level esacping optional (i.e. allow only ctrl-m to take you to command mode)
+ [ ] make the multi-level escaping optional (i.e. allow only `ctrl-m` to take
+     you to command mode)
  
  [ ] look up what else I had in my todo a few weeks ago
 
  [ ] add logic to %vimception to write vimception.json to profile_dir/static/custom
 	- investigate json config in general (Matthias implemented this at some point)
+
+[ ] multi-level undo
+
+[ ] unalias v - and use nb-cccp if it's loaded 
