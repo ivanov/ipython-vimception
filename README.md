@@ -3,9 +3,9 @@ IPython Vimception
 
 Vim-within-vim in the IPython Notebook.
 
-This is a work in progress. For now, put these files into the `extensions`
-subdirectory of whatever `ipython locate` returns, usually these files go into
-the `~/.ipython/extensions` directory.
+This is a work in progress. For now, put these files into a folder called
+`vimception` (**not** `ipython-vimception`) in the `extensions` subdirectory of whatever `ipython locate`
+returns, usually these files go into the `~/.ipython/extensions` directory.
 
 Once you do that, in the notebook, just make an execute a cell with:
 
