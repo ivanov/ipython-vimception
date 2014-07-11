@@ -7,7 +7,9 @@ var def_edit = IPython.default_edit_shortcuts;
 // get the code mirror editor of a curently selected cell
 function C() { return IPython.notebook.get_selected_cell().code_mirror; };
 
-// change the mode of all current and future CodeMirror instances
+// Change the mode of all current and future CodeMirror instances
+// Emacs users can use this function as just to('emacs') so long as they've
+// required/loaded emacs.js from CodeMirror
 function to(mode) {
     var mode = mode || 'vim'
     // first let's apply vim mode to all current cells
@@ -71,6 +73,24 @@ console.log('Great success');
 IPython.CodeCell.options_default.cm_config.foldGutter = true;
 IPython.CodeCell.options_default.cm_config.gutters =  ["CodeMirror-linenumbers", "CodeMirror-foldgutter"];
 
+IPython.Cell.prototype.at_top = function () {
+        var cm = this.code_mirror;
+        var cursor = cm.getCursor();
+        if (cursor.line === 0) {
+            return true;
+        }
+        return false;
+    };
+
+
+IPython.Cell.prototype.at_bottom = function () {
+    var cm = this.code_mirror;
+    var cursor = cm.getCursor();
+    if (cursor.line === (cm.lineCount()-1)) {
+        return true;
+    }
+    return false;
+};
 // on all code mirror instances on this page, apply the function f
 function all_cm(f) {
     // apply f to every code mirror instance. f takes one parameter
