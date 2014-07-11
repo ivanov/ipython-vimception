@@ -1,7 +1,7 @@
 IPython Vimception
 ==================
 
-Vim-within-vim in the IPython Notebook.
+Vim-within-Vim in the IPython Notebook.
 
 This is a work in progress. For now, put these files into a folder called
 `vimception` (**not** `ipython-vimception`) in the `extensions` subdirectory of whatever `ipython locate`
