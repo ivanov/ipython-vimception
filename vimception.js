@@ -159,6 +159,7 @@ cmd.add_shortcuts(command_shortcuts);
 // (IPython.keyboard_manager) get it CodeMirror issues signals on mode change, 
 // so we have to hook into that to get Ctrl-[
 edit.remove_shortcut('Ctrl-[');
+edit.remove_shortcut('Esc');
 
 CodeMirror.commands.leaveInsertOrEdit = function (cm) {
     if ( cm.state.vim.insertMode ) {
@@ -173,6 +174,7 @@ CodeMirror.commands.leaveInsertOrEdit = function (cm) {
 //C().options.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
 all_cm( function (cm) {
     cm.options.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
+    cm.options.extraKeys['Esc'] = 'leaveInsertOrEdit';
     if ( CodeMirror.defaults.extraKeys === null ) { 
         CodeMirror.defaults.extraKeys = {};
     }
@@ -182,6 +184,8 @@ all_cm( function (cm) {
     // - it could also be the case that when we instatiate CodeMirror, we somehow leave out CM.defaults.extraKeys
     IPython.CodeCell.options_default.cm_config.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
     IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-['] = 'leaveInsertOrEdit';
+    IPython.CodeCell.options_default.cm_config.extraKeys['Esc'] = 'leaveInsertOrEdit';
+    IPython.TextCell.options_default.cm_config.extraKeys['Esc'] = 'leaveInsertOrEdit';
 })
 
 // On blur, make sure we go back to command mode for CodeMirror (in case user clicked away)
@@ -279,7 +283,6 @@ cmd.add_shortcut('shift-j', def_cmd['shift-m'])
 
 //edit.add_shortcut('k', def_edit['up'].handler);
 //[edit.add_shortcut('j', def_edit['down'].handler);
-edit.remove_shortcut('ctrl-[');
 
 CodeMirror.prototype.save = function() { 
     IPython.notebook.save_checkpoint()
@@ -343,9 +346,6 @@ all_cm( function (cm) {
     cm.setOption('theme', "xq-light");
     // support this a :only? turn off full screen on blur
     cm.options.extraKeys["F11"] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
-    cm.options.extraKeys["Esc"] =  function(cm) {
-          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-        };
     cm.options.extraKeys["Ctrl-A"] =  function(cm) {
           if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
         };
