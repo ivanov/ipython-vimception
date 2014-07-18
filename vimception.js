@@ -361,6 +361,7 @@ $("#ipython_notebook").append('<img id="vim" src="http://www.vim.org/images/vim_
     + ' style="'
     + 'position: absolute; left: 51px; top: -10px; height: initial;">')
 
+$("#vim").click($(this).hide);
 
 // -------- old -------------
 //$('#vim').animate({
