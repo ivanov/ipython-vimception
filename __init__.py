@@ -1,1 +1,1 @@
-from vimception import load_ipython_extension
+from .vimception import load_ipython_extension

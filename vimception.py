@@ -1,3 +1,4 @@
+from __future__ import print_function
 """
 This is VimCeption
 
@@ -18,7 +19,7 @@ def vimception(line=''):
     if line != 'off':
         display(Javascript(vimception_js))
     else:
-        print line
+        print(line)
         display(Javascript(vimception_js + "to('default');"));
 
 def load_ipython_extension(ip):
