@@ -3,6 +3,10 @@ IPython Vimception
 
 Vim-within-Vim in the IPython Notebook.
 
+In my "Putting the V in IPython" talk at SciPy2014, I spent [half of my time
+talking about ipython-vimception](https://www.youtube.com/watch?v=p9gnhmX1sPo#t=723).
+Here are the [slides for the talk](http://nbviewer.ipython.org/github/ivanov/scipy2014/blob/master/v%20in%20IPython.ipynb).
+
 This is a work in progress. For now, put these files into a folder called
 `vimception` (**not** `ipython-vimception`) in the `extensions` subdirectory of whatever `ipython locate`
 returns, usually these files go into the `~/.ipython/extensions` directory.
