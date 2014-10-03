@@ -341,9 +341,6 @@ all_cm( function (cm) {
     IPython.TextCell.options_default.cm_config.extraKeys['Ctrl-F'] = function(cm){ cm.foldCode(cm.getCursor()); };
 
     // todo - do this for new cells as well
-    //cm.setOption('theme', "tomorrow-night-eighties");
-    //cm.setOption('theme', "twilight");
-    cm.setOption('theme', "xq-light");
     // support this a :only? turn off full screen on blur
     cm.options.extraKeys["F11"] =  function(cm) { cm.setOption("fullScreen", !cm.getOption("fullScreen"))};
     cm.options.extraKeys["Ctrl-A"] =  function(cm) {
