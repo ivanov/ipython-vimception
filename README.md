@@ -72,6 +72,7 @@ TODO
 [ ] unalias v - and use nb-cccp if it's loaded 
 
 [ ] turn it into an nbextension (no python side)
+    - implementing this should close #4 as well
 
 [ ] Ctrl-n and Ctrl-p should work as local completion (like in vim)
 
@@ -83,3 +84,6 @@ TODO
 [ ] allow going between cells independent of which character you're on
 
 [ ] shift-J on the last line should join cell below
+
+[ ] standardize on a post-load function that vimception will call to allow for
+    further customization.
