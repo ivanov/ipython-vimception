@@ -38,8 +38,6 @@ $([IPython.events]).on('notebook_loaded.Notebook', function(){
     $('#help_menu').prepend([
             '<li id="vimception" title="load up vimception cell">',
             '<a href="#" title="vimception" onClick="load_vimception()">vimception</a></li>',
-            '<li id="reflow" title="reflow markdown text">',
-            '<a href="#" title="vimception" onClick="reflow_markdown()">reflow text</a></li>',
             ].join("\n"));
 
 // uncomment next line to *always* start in vimception
