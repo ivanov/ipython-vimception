@@ -87,3 +87,5 @@ TODO
 
 [ ] standardize on a post-load function that vimception will call to allow for
     further customization.
+
+[ ] look into the codemirror changes [here](https://github.com/codemirror/CodeMirror/issues/2915)
