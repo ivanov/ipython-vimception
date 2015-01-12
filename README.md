@@ -89,3 +89,8 @@ TODO
     further customization.
 
 [ ] look into the codemirror changes [here](https://github.com/codemirror/CodeMirror/issues/2915)
+
+Related Projects
+----------------
+
+[vim-ipython] - A two-way integration between Vim and IPython by the same author.
