@@ -93,4 +93,5 @@ TODO
 Related Projects
 ----------------
 
-[vim-ipython] - A two-way integration between Vim and IPython by the same author.
+[vim-ipython](https://github.com/ivanov/vim-ipython) - A two-way integration
+between Vim and IPython by the same author.
